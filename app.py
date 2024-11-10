@@ -24,7 +24,7 @@ class FoodDecider(ctk.CTk):
         self.mainloop()
 
     def random_choice(self, *args):
-        self.list_choices = self.entry_string.get().split(',')
+        self.list_choices = [choice.strip() for choice in choices.split(',')]
         self.output_string.set(choice(self.list_choices))
         print(self.output_string.get())
 
