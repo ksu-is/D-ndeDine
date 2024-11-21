@@ -64,51 +64,51 @@ class EntrySide(ctk.CTkFrame):
         # placing frame
         self.place(relx = 0.25, rely = 0.5, relwidth = 0.5, relheight = 1, anchor = 'center')
 
-        self.entry_string = entry_string
-        self.output_string = output_string
-
-        # layout
-        self.rowconfigure(0, weight = 2, uniform = 'a')
-        self.rowconfigure(1, weight = 1, uniform = 'a')
-        self.rowconfigure(2, weight = 2, uniform = 'a')
-        self.columnconfigure(0, weight = 1, uniform = 'a')
+         # Layout
+        self.rowconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform='a')
+        self.columnconfigure(0, weight=1, uniform='a')
 
         # label
         label = ctk.CTkLabel(self, text = 'Enter Options Separated by Commas', text_color = 'gray', font = ctk.CTkFont(family = 'Calibri', size = 15, weight = 'bold'))
         label.grid(row = 0, column = 0, sticky = 'nsew')
 
-        # entrybox
-        entry_box = ctk.CTkEntry(self, textvariable = entry_string)
-        entry_box.grid(row = 1, column = 0, sticky = 'nsew', padx = 10, pady = 10)
+       # User 1 Entry
+        label1 = ctk.CTkLabel(self, text="User 1: Enter Options", font=("Calibri", 15, "bold"))
+        label1.grid(row=0, column=0, sticky='nsew')
+        entry1 = ctk.CTkEntry(self, textvariable=entry_string_user1)
+        entry1.grid(row=1, column=0, sticky='nsew', padx=10, pady=10)
+        button1 = ctk.CTkButton(self, text="Submit User 1", command=lambda: submit_func("User1", entry_string_user1))
+        button1.grid(row=2, column=0, sticky='nsew', padx=10, pady=10)
 
-        # button
-        button = ctk.CTkButton(
-            self,
-            text = 'get random',
-            command = save_func,
-            fg_color = '#97f0d2',
-            text_color = 'gray',
-            font = ctk.CTkFont(family = 'Calibri', size = 20, weight = 'bold'),
-            hover_color = '#88dbc0')
-        button.grid(row = 2, column = 0, sticky = 'nsew', padx = 15, pady = 40)
-    
+        # User 2 Entry
+        label2 = ctk.CTkLabel(self, text="User 2: Enter Options", font=("Calibri", 15, "bold"))
+        label2.grid(row=3, column=0, sticky='nsew')
+        entry2 = ctk.CTkEntry(self, textvariable=entry_string_user2)
+        entry2.grid(row=4, column=0, sticky='nsew', padx=10, pady=10)
+        button2 = ctk.CTkButton(self, text="Submit User 2", command=lambda: submit_func("User2", entry_string_user2))
+        button2.grid(row=5, column=0, sticky='nsew', padx=10, pady=10)
+        
 class OutputSide(ctk.CTkFrame):
     def __init__(self, parent, output_string):
         super().__init__(parent, fg_color = '#b3f2f1', corner_radius = 0)
         # placing frame
         self.place(relx = 0.75, rely = 0.5, relwidth = 0.5, relheight = 1, anchor = 'center')
-        self.output_string = output_string
+       
 
         # layout
-        self.rowconfigure((0,1), weight = 1, uniform = 'b')
-        self.columnconfigure(0, weight = 1, uniform = 'b')
+        self.rowconfigure((0, 1, 2), weight=1, uniform='b')
+        self.columnconfigure(0, weight=1, uniform='b')
 
         # label
-        label = ctk.CTkLabel(self, text = 'Random Choice is:', text_color = 'gray', font = ctk.CTkFont(family = 'Calibri', size = 20, weight = 'bold'))
+        label = ctk.CTkLabel(self, text = 'Your going to:', text_color = 'gray', font = ctk.CTkFont(family = 'Calibri', size = 20, weight = 'bold'))
         label.grid(row = 0, column = 0, sticky = 'nsew')
 
-        # output label
-        output_label = ctk.CTkLabel(self, textvariable = self.output_string, text_color = 'gray', font = ctk.CTkFont(family = 'Calibri', size = 20, weight = 'bold'))
-        output_label.grid(row = 1, column = 0, sticky = 'new')
+        # Output Label
+        output_label = ctk.CTkLabel(self, textvariable=output_string, font=("Calibri", 20, "bold"))
+        output_label.grid(row=1, column=0, sticky='new')
+
+        # Match Button
+        match_button = ctk.CTkButton(self, text="Find Matches", command=parent.find_matches)
+        match_button.grid(row=2, column=0, sticky='nsew', padx=10, pady=10)
 
 FoodDecider()
