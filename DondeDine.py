@@ -3,30 +3,60 @@ from random import choice
 
 class FoodDecider(ctk.CTk):
     def __init__(self):
-        super().__init__(fg_color = 'white')
+        super().__init__(fg_color = 'Red')
         # Initializing window
-        self.title("Random Food Decider")
+        self.title("Donde Dine")
         self.resizable(width=False, height=False)
         self.geometry('600x400')
 
-        # variables
-        self.entry_string = ctk.StringVar()
+        # Variables for 2 users 
+       self.user1_choices = []
+        self.user2_choices = []
+        self.user1_revoked = 0  # Incase Girlfriend "Does not care"
+        self.user2_revoked = 0  # Incase Boyfriend "Does not Care"
+        
+        # StringVars for input/output (Strings for Widget text)
+        self.entry_string_user1 = ctk.StringVar()
+        self.entry_string_user2 = ctk.StringVar()
         self.output_string = ctk.StringVar()
 
-        # widgets
-        EntrySide(self, self.entry_string, self.output_string, self.random_choice)
-        OutputSide(self, self.output_string)
+        # Widgets
+        self.create_widgets()
 
-        # event
-        self.bind('<Return>', self.random_choice)
-
-        # run
+        # run the application
         self.mainloop()
-
-    def random_choice(self, *args):
-        self.list_choices = [choice.strip() for choice in choices.split(',')]
-        self.output_string.set(choice(self.list_choices))
-        print(self.output_string.get())
+    def create_widgets(self):
+        EntrySide(self, self.entry_string_user1, self.entry_string_user2, self.output_string, self.submit_choices)
+        OutputSide(self, self.output_string)
+        
+    def submit_choices(self, user, entry_string):
+        choices = [choice.strip() for choice in entry_string.get().split(',')]
+        if user == "User1":
+            self.user1_choices = choices
+            print("Girlfriend Choices:", self.user1_choices)
+        elif user == "User2":
+            self.user2_choices = choices
+            print("Boyfriend Choices:", self.user2_choices)
+        self.output_string.set("Choices submitted!")
+        
+    def find_matches(self):
+        matches = list(set(self.user1_choices) & set(self.user2_choices))
+        if matches:
+            self.output_string.set(f"Matched options: {', '.join(matches)}")
+        else:
+            self.output_string.set("No matches found!")
+        print("Matched options:", matches)
+    def revoke_choice(self, user):
+        if user == "User1" and self.user1_revoked < 1:
+            self.user1_revoked += 1
+            self.random_choice()  # Randomize again
+            self.output_string.set(f"User 1 revoked! Remaining attempts: {1 - self.user1_revoked}")
+        elif user == "User2" and self.user2_revoked < 1:
+            self.user2_revoked += 1
+            self.random_choice()  # Randomize again
+            self.output_string.set(f"User 2 revoked! Remaining attempts: {1 - self.user2_revoked}")
+        else:
+            self.output_string.set("Revoke limit reached!")    
 
 class EntrySide(ctk.CTkFrame):
     def __init__(self, parent, entry_string, output_string, save_func):
