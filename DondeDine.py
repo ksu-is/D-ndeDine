@@ -3,7 +3,7 @@ from random import choice
 
 class FoodDecider(ctk.CTk):
     def __init__(self):
-        super().__init__(fg_color = 'Red')
+        super().__init__(fg_color = '#FFCDD2')
         # Initializing window
         self.title("Donde Dine")
         self.resizable(width=False, height=False)
